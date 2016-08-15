@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="center" minHeight="520.0" minWidth="1000.0" prefHeight="520.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kafkatool.controllers.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <TabPane fx:id="tabPane" prefHeight="450.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+        <tabs>
+          <Tab closable="false" text="Producer">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="1000.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="48.0" text="Message" />
+                        <TextArea fx:id="textArea" layoutX="-2.0" layoutY="65.0" prefHeight="294.0" prefWidth="1000.0" AnchorPane.bottomAnchor="36.0" AnchorPane.rightAnchor="0.0" />
+                        <HBox layoutX="14.0" layoutY="14.0" prefHeight="35.0" prefWidth="980.0">
+                           <children>
+                              <Label prefHeight="30.0" prefWidth="115.0" text="Topic to send to:" />
+                              <ComboBox fx:id="topicSelector" onAction="#selectTopic" prefWidth="150.0" promptText="Select..." />
+                           </children>
+                        </HBox>
+                        <Button fx:id="sendButton" layoutX="942.0" layoutY="381.0" mnemonicParsing="false" onAction="#send" text="Send" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </TabPane>
+      <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="3">
+        <buttons>
+            <Button mnemonicParsing="false" text="Settings" />
+          <Button fx:id="addConsumerButton" mnemonicParsing="false" onAction="#addConsumer" text="Add consumer" />
+        </buttons>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+      </ButtonBar>
+      <MenuBar GridPane.rowIndex="1">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </MenuBar>
+   </children>
+</GridPane>
