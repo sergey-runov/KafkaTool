@@ -55,7 +55,7 @@
       </TabPane>
       <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="3">
         <buttons>
-            <Button mnemonicParsing="false" text="Settings" />
+            <Button mnemonicParsing="false" onAction="#showConfigurationDialog" text="Settings" />
           <Button fx:id="addConsumerButton" mnemonicParsing="false" onAction="#addConsumer" text="Add consumer" />
         </buttons>
          <opaqueInsets>

@@ -22,6 +22,7 @@ public class KafkaConsumerService {
     private Map<String, TextArea> messagesMap = new ConcurrentHashMap<>();
     private KafkaConsumer<String, String> consumer;
     private boolean isRunning = true;
+    private Thread checker;
     private static KafkaConsumerService instance;
 
     public static synchronized KafkaConsumerService getInstance() {
@@ -33,7 +34,11 @@ public class KafkaConsumerService {
 
     private KafkaConsumerService() {
         consumer = new KafkaConsumer<>(Main.applicationProperties);
-        Thread checker = new Thread(() -> {
+        startCheckerThread();
+    }
+
+    private void startCheckerThread() {
+        checker = new Thread(() -> {
             while (isRunning) {
                 if (!messagesMap.keySet().isEmpty()) {
                     ConsumerRecords<String, String> records = consumer.poll(100);
@@ -46,8 +51,7 @@ public class KafkaConsumerService {
                 }
                 try {
                     Thread.sleep(Long.parseLong(Main.applicationProperties.getProperty("refreshInterval")));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } catch (InterruptedException ignored) {
                 }
             }
         });
@@ -73,5 +77,16 @@ public class KafkaConsumerService {
     public void stop() {
         isRunning = false;
         consumer.close();
+    }
+
+    public void reinitialize() {
+        stop();
+        consumer = new KafkaConsumer<>(Main.applicationProperties);
+        if (checker.isAlive()) try {
+            checker.join();
+        } catch (InterruptedException ignored) {
+        }
+        isRunning = true;
+        startCheckerThread();
     }
 }

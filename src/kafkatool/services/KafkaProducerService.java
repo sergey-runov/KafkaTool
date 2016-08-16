@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 public class KafkaProducerService {
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private final KafkaProducer<String, String> producer;
+    private KafkaProducer<String, String> producer;
     private static KafkaProducerService instance;
 
     public static synchronized KafkaProducerService getInstance() {
@@ -43,6 +43,11 @@ public class KafkaProducerService {
 
     public void stop() {
         producer.close();
+    }
+
+    public void reinitialize() {
+        producer.close();
+        producer = new KafkaProducer<>(Main.applicationProperties);
     }
 
 }
