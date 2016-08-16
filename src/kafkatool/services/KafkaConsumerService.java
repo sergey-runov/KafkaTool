@@ -1,6 +1,7 @@
 package kafkatool.services;
 
 import javafx.scene.control.TextArea;
+import kafkatool.Main;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -9,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,9 +22,17 @@ public class KafkaConsumerService {
     private Map<String, TextArea> messagesMap = new ConcurrentHashMap<>();
     KafkaConsumer<String, String> consumer;
     private boolean isRunning = true;
+    private static KafkaConsumerService instance;
 
-    public KafkaConsumerService(Properties props) {
-        consumer = new KafkaConsumer<>(props);
+    public static synchronized KafkaConsumerService getInstance() {
+        if (instance == null) {
+            instance = new KafkaConsumerService();
+        }
+        return instance;
+    }
+
+    private KafkaConsumerService() {
+        consumer = new KafkaConsumer<>(Main.applicationProperties);
         Thread checker = new Thread(() -> {
             while (isRunning) {
                 if (!messagesMap.keySet().isEmpty()) {
@@ -37,7 +45,7 @@ public class KafkaConsumerService {
                     }
                 }
                 try {
-                    Thread.sleep(Long.parseLong(props.getProperty("refreshInterval")));
+                    Thread.sleep(Long.parseLong(Main.applicationProperties.getProperty("refreshInterval")));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

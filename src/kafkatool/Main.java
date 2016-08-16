@@ -30,7 +30,7 @@ public class Main extends Application {
         try(InputStream input = Main.class.getResourceAsStream("../config/kafkaTool.properties")) {
             applicationProperties.load(input);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unable to read property file with settings! Can not proceed!");
         }
         launch(args);
     }

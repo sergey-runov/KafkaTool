@@ -1,10 +1,10 @@
 package kafkatool.services;
 
 import javafx.concurrent.Task;
+import kafkatool.Main;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,9 +16,17 @@ public class KafkaProducerService {
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final KafkaProducer<String, String> producer;
+    private static KafkaProducerService instance;
 
-    public KafkaProducerService(Properties props) {
-        producer = new KafkaProducer<>(props);
+    public static synchronized KafkaProducerService getInstance() {
+        if (null == instance) {
+            instance = new KafkaProducerService();
+        }
+        return instance;
+    }
+
+    private KafkaProducerService() {
+        producer = new KafkaProducer<>(Main.applicationProperties);
     }
 
     public void sendMessageToKafka(String message, String topic, Runnable callback) {

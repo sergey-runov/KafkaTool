@@ -78,7 +78,7 @@ public class Controller {
     @FXML
     private void initialize() {
         topicSelector.getItems().addAll(Main.applicationProperties.getProperty("topics").trim().split(","));
-        this.producerService = new KafkaProducerService(Main.applicationProperties);
-        this.consumerService = new KafkaConsumerService(Main.applicationProperties);
+        this.producerService = KafkaProducerService.getInstance();
+        this.consumerService = KafkaConsumerService.getInstance();
     }
 }
