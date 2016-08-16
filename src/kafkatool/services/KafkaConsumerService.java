@@ -5,8 +5,13 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import java.sql.Timestamp;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Service to watch given kafka topics
@@ -26,7 +31,7 @@ public class KafkaConsumerService {
                     ConsumerRecords<String, String> records = consumer.poll(100);
                     for (ConsumerRecord<String, String> record : records) {
                         TextArea areaToUpdate = messagesMap.get(record.topic());
-                        areaToUpdate.appendText( (new Timestamp(record.timestamp())).toLocalDateTime() + ": " + record.value() + "\n");
+                        areaToUpdate.appendText( LocalDateTime.now() + ": " + record.value() + "\n");
                     }
                 }
                 try {
@@ -44,6 +49,6 @@ public class KafkaConsumerService {
         Set<String> topics = new HashSet<>(consumer.subscription());
         topics.add(topicName);
         consumer.unsubscribe();
-        consumer.subscribe(topics);
+        consumer.subscribe(new ArrayList<>(topics));
     }
 }

@@ -26,6 +26,7 @@ public class KafkaProducerService {
             @Override
             protected Boolean call() throws Exception {
                 producer.send(new ProducerRecord<>(topic, message));
+                producer.flush();
                 callback.run();
                 return true;
             }
