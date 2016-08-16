@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import kafkatool.services.KafkaConsumerService;
+import kafkatool.services.KafkaProducerService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +25,12 @@ public class Main extends Application {
         primaryStage.setTitle("Kafka tool");
         primaryStage.setScene(new Scene(root, 1000, 520));
         primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        KafkaConsumerService.getInstance().stop();
+        KafkaProducerService.getInstance().stop();
     }
 
 

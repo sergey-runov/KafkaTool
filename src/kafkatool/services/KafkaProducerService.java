@@ -41,4 +41,8 @@ public class KafkaProducerService {
         });
     }
 
+    public void stop() {
+        producer.close();
+    }
+
 }

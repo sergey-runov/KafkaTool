@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class KafkaConsumerService {
 
     private Map<String, TextArea> messagesMap = new ConcurrentHashMap<>();
-    KafkaConsumer<String, String> consumer;
+    private KafkaConsumer<String, String> consumer;
     private boolean isRunning = true;
     private static KafkaConsumerService instance;
 
@@ -68,5 +68,10 @@ public class KafkaConsumerService {
         topics.remove(topicName);
         consumer.unsubscribe();
         consumer.subscribe(new ArrayList<>(topics));
+    }
+
+    public void stop() {
+        isRunning = false;
+        consumer.close();
     }
 }
