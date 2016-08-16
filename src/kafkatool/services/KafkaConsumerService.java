@@ -7,11 +7,11 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Service to watch given kafka topics
@@ -19,7 +19,7 @@ import java.util.Set;
  */
 public class KafkaConsumerService {
 
-    private Map<String, TextArea> messagesMap = new HashMap<>();
+    private Map<String, TextArea> messagesMap = new ConcurrentHashMap<>();
     KafkaConsumer<String, String> consumer;
     private boolean isRunning = true;
 
@@ -31,7 +31,9 @@ public class KafkaConsumerService {
                     ConsumerRecords<String, String> records = consumer.poll(100);
                     for (ConsumerRecord<String, String> record : records) {
                         TextArea areaToUpdate = messagesMap.get(record.topic());
-                        areaToUpdate.appendText( LocalDateTime.now() + ": " + record.value() + "\n");
+                        if (null != areaToUpdate) {
+                            areaToUpdate.appendText(LocalDateTime.now() + ":\n" + record.value() + "\n");
+                        }
                     }
                 }
                 try {
@@ -48,6 +50,14 @@ public class KafkaConsumerService {
         messagesMap.putIfAbsent(topicName, area);
         Set<String> topics = new HashSet<>(consumer.subscription());
         topics.add(topicName);
+        consumer.unsubscribe();
+        consumer.subscribe(new ArrayList<>(topics));
+    }
+
+    public void unregisterTopic(String topicName) {
+        messagesMap.remove(topicName);
+        Set<String> topics = new HashSet<>(consumer.subscription());
+        topics.remove(topicName);
         consumer.unsubscribe();
         consumer.subscribe(new ArrayList<>(topics));
     }

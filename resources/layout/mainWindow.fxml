@@ -30,7 +30,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <TabPane fx:id="tabPane" prefHeight="450.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+      <TabPane fx:id="tabPane" prefHeight="450.0" prefWidth="1000.0" tabClosingPolicy="SELECTED_TAB" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
         <tabs>
           <Tab closable="false" text="Producer">
             <content>

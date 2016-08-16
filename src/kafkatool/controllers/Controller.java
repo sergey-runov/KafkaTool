@@ -52,15 +52,18 @@ public class Controller {
     @FXML
     public void addConsumer() throws IOException {
         Optional<String> result = getTopicName();
-        if (!result.isPresent() || "".equals(result.get())) {
+        if (!result.isPresent() || "".equals(result.get().trim())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("You should specify topic name!");
             alert.show();
             return;
         }
+        final String topicName = result.get();
         Tab tab = FXMLLoader.load(Main.class.getResource("../layout/consumerTab.fxml"));
         TextArea consTextarea = (TextArea) ((AnchorPane) tab.getContent()).getChildren().get(0);
-        tab.setText(result.get() + " consumer");
+        tab.setText(topicName);
+        tab.setClosable(true);
+        tab.setOnClosed(event -> consumerService.unregisterTopic(topicName));
         tabPane.getTabs().add(tab);
         consumerService.addTopicToWatch(result.get(), consTextarea);
     }
