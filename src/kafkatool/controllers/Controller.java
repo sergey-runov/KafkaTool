@@ -1,25 +1,31 @@
 package kafkatool.controllers;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableStringValue;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import kafkatool.Main;
 import kafkatool.services.KafkaConsumerService;
 import kafkatool.services.KafkaProducerService;
 import kafkatool.util.JSONMinify;
 import org.controlsfx.control.PropertySheet;
-import org.controlsfx.property.BeanProperty;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  * Main application controller
@@ -57,7 +63,7 @@ public class Controller {
     public void addConsumer() throws IOException {
         final String topicName = getTopicName();
         if (null == topicName) return;
-        Tab tab = FXMLLoader.load(Main.class.getResource("../layout/consumerTab.fxml"));
+        Tab tab = FXMLLoader.load(Main.class.getResource("kafkatool/layout/consumerTab.fxml"));
         TextArea consTextarea = (TextArea) ((AnchorPane) tab.getContent()).getChildren().get(0);
         tab.setText(topicName);
         tab.setClosable(true);
