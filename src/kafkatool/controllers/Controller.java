@@ -63,7 +63,7 @@ public class Controller {
     public void addConsumer() throws IOException {
         final String topicName = getTopicName();
         if (null == topicName) return;
-        Tab tab = FXMLLoader.load(Main.class.getResource("kafkatool/layout/consumerTab.fxml"));
+        Tab tab = FXMLLoader.load(Main.class.getResource("/kafkatool/layout/consumerTab.fxml"));
         TextArea consTextarea = (TextArea) ((AnchorPane) tab.getContent()).getChildren().get(0);
         tab.setText(topicName);
         tab.setClosable(true);
@@ -126,8 +126,10 @@ public class Controller {
         alert.getButtonTypes().addAll(ButtonType.CANCEL, saveButton);
         Optional response = alert.showAndWait();
         if(response.isPresent() && saveButton.equals(response.get())) {
+            topicSelector.setItems(FXCollections.observableArrayList());
             app.saveNewProperties(mapToModify);
             app.reinitializeApplication();
+            topicSelector.getItems().addAll(Main.applicationProperties.getProperty("topics").trim().split(","));
         }
     }
 

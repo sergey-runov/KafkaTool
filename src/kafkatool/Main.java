@@ -9,21 +9,24 @@ import kafkatool.controllers.Controller;
 import kafkatool.services.KafkaConsumerService;
 import kafkatool.services.KafkaProducerService;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Main extends Application {
 
     public static final Properties applicationProperties = new Properties();
+    private static final String EXTERNAL_PROPERTY_FILE_PATH = "./kafkaTool.properties";
+    private static final String INTERNAL_PROPERTY_FILE_PATH = "config/kafkaTool.properties";
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/kafkatool/layout/mainWindow.fxml"));
@@ -48,14 +51,18 @@ public class Main extends Application {
     }
 
     public void saveNewProperties(Properties properties) {
-        URL url = Main.class.getResource("/kafkatool/config/kafkaTool.properties");
-        try (OutputStream output = new FileOutputStream(new File(url.toURI().getPath()))) {
+        Path path = Paths.get(EXTERNAL_PROPERTY_FILE_PATH);
+        OutputStream output;
+        try {
+            if (Files.notExists(path))
+                Files.createFile(path);
+            output = new FileOutputStream(EXTERNAL_PROPERTY_FILE_PATH);
             properties.store(output, null);
-        } catch (IOException | URISyntaxException e) {
+            output.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     public static void main(String[] args) {
         readApplicationProperties();
@@ -63,10 +70,17 @@ public class Main extends Application {
     }
 
     private static void readApplicationProperties() {
-        try(InputStream input = Main.class.getResourceAsStream("/kafkatool/config/kafkaTool.properties")) {
+        try (InputStream input = checkIfFileExists() ?
+                new FileInputStream(EXTERNAL_PROPERTY_FILE_PATH) :
+                Main.class.getResourceAsStream("/kafkatool/config/kafkaTool.properties")) {
             applicationProperties.load(input);
         } catch (IOException e) {
             throw new RuntimeException("Unable to read property file with settings! Can not proceed!");
         }
+    }
+
+    private static boolean checkIfFileExists() {
+        Path path = Paths.get(EXTERNAL_PROPERTY_FILE_PATH);
+        return Files.exists(path);
     }
 }
