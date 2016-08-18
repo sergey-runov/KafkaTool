@@ -55,6 +55,7 @@ public class KafkaConsumerService {
                 }
             }
         });
+        checker.setDaemon(true);
         checker.start();
     }
 
@@ -80,12 +81,14 @@ public class KafkaConsumerService {
     }
 
     public void reinitialize() {
-        stop();
-        consumer = new KafkaConsumer<>(Main.applicationProperties);
+        isRunning = false;
         if (checker.isAlive()) try {
             checker.join();
         } catch (InterruptedException ignored) {
         }
+        consumer.close();
+        consumer = new KafkaConsumer<>(Main.applicationProperties);
+        consumer.subscribe(new ArrayList<>(messagesMap.keySet()));
         isRunning = true;
         startCheckerThread();
     }
