@@ -16,8 +16,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-
-<GridPane alignment="center" minHeight="520.0" minWidth="1000.0" prefHeight="520.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kafkatool.controllers.Controller">
+<GridPane alignment="center" minHeight="520.0" minWidth="1000.0" prefHeight="520.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kafkatool.controllers.Controller">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -42,6 +41,16 @@
                            <children>
                               <Label prefHeight="30.0" prefWidth="115.0" text="Topic to send to:" />
                               <ComboBox fx:id="topicSelector" onAction="#selectTopic" prefWidth="150.0" promptText="Select..." />
+                              <Label text="Select message from history:">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <ComboBox fx:id="historySelector" onAction="#selectHistoryEntry" prefWidth="150.0" promptText="History...">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </ComboBox>
                            </children>
                         </HBox>
                         <Button fx:id="sendButton" layoutX="942.0" layoutY="381.0" mnemonicParsing="false" onAction="#send" text="Send" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />

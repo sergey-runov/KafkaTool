@@ -42,6 +42,7 @@ public class KafkaProducerService {
     }
 
     public void stop() {
+        executorService.shutdownNow();
         producer.close();
     }
 
